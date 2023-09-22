@@ -7,11 +7,12 @@ import br.com.designpatterns.loja.orcamento.Orcamento;
 public class CalculadoraDeDescontos {
 	
 	public BigDecimal calcular(Orcamento orcamento) {
-		BigDecimal desconto = new DescontoMaiorQueCincoItens().calcular(orcamento);
-		if (desconto == BigDecimal.ZERO) {
-			desconto = new DescontoValorMaiorQue500().calcular(orcamento);
-		}
-		return BigDecimal.ZERO;
-
+		Desconto cadeiaDeDescontos = new DescontoMaiorQueCincoItens(
+				new DescontoValorMaiorQue500(
+						new SemDesconto()
+				)
+		);
+		
+		return cadeiaDeDescontos.calcular(orcamento);
 	}
 }
